@@ -93,6 +93,7 @@ public class GhiChiSoActivity extends Fragment {
 
                         String[]temp=resultTienNuoc.replace("[", "").replace("]", "").split(",");
                         _TienNuoc=temp[0];
+
                         Double TongTien=Double.parseDouble(temp[0])*1.15;
                         Long TongTienRound=Math.round(TongTien);
                         _ChiTiet=temp[1];

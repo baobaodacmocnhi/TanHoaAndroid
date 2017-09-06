@@ -6,7 +6,7 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-    <uses-feature android:name="android.hardware.location.gps" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 
     <application
         android:allowBackup="true"
@@ -29,7 +29,6 @@
             android:name=".DocSoActivity"
             android:label="@string/title_activity_doc_so"
             android:theme="@style/AppTheme.NoActionBar" />
-        <!--<activity android:name=".ChupHinhDocSoActivity" />-->
 
         <provider
             android:name="android.support.v4.content.FileProvider"

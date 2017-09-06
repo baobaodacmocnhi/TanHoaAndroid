@@ -1,7 +1,5 @@
 package vn.com.abc.docsoandroid;
 
-import android.graphics.Bitmap;
-
 import org.ksoap2.SoapEnvelope;
 import org.ksoap2.serialization.PropertyInfo;
 import org.ksoap2.serialization.SoapObject;
@@ -291,7 +289,7 @@ public class CWebService {
         return ExcuteNonReturn(request, SOAP_ACTION);
     }
 
-    public String ThemHinhDHN(String DanhBo, String CreateBy, String imageStr) {
+    public String ThemHinhDHN(String DanhBo, String CreateBy, String imageStr, String Latitude, String Longitude) {
         String SOAP_ACTION = "http://tempuri.org/DS_ThemHinhDHN";
         String OPERATION_NAME = "DS_ThemHinhDHN";
         SoapObject request = new SoapObject(WSDL_TARGET_NAMESPACE, OPERATION_NAME);
@@ -311,6 +309,18 @@ public class CWebService {
         pi = new PropertyInfo();
         pi.setName("imageStr");
         pi.setValue(imageStr);
+        pi.setType(String.class);
+        request.addProperty(pi);
+
+        pi = new PropertyInfo();
+        pi.setName("Latitude");
+        pi.setValue(Latitude);
+        pi.setType(String.class);
+        request.addProperty(pi);
+
+        pi = new PropertyInfo();
+        pi.setName("Longitude");
+        pi.setValue(Longitude);
         pi.setType(String.class);
         request.addProperty(pi);
 
