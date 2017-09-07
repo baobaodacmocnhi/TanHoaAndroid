@@ -1,4 +1,4 @@
-package vn.com.abc.docsoandroid;
+package vn.com.abc.tanhoaandroid;
 
 import org.ksoap2.serialization.SoapObject;
 

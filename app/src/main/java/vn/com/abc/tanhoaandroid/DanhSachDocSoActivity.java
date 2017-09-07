@@ -1,8 +1,6 @@
-package vn.com.abc.docsoandroid;
+package vn.com.abc.tanhoaandroid;
 
-import android.content.Context;
 import android.support.annotation.Nullable;
-import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;

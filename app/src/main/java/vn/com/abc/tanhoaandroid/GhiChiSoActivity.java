@@ -1,6 +1,5 @@
-package vn.com.abc.docsoandroid;
+package vn.com.abc.tanhoaandroid;
 
-import android.graphics.Bitmap;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
@@ -16,7 +15,6 @@ import android.widget.Toast;
 import org.ksoap2.serialization.SoapObject;
 
 import java.util.Map;
-import java.util.concurrent.ExecutionException;
 
 public class GhiChiSoActivity extends Fragment {
 
@@ -28,7 +26,7 @@ public class GhiChiSoActivity extends Fragment {
     private String _ChiTiet="";
     private  String _TienNuoc="";
     private Spinner cmbCode;
-    private CWebService ws = new CWebService();
+private WSAsyncTask task;
 
     @Nullable
     @Override
@@ -88,8 +86,10 @@ public class GhiChiSoActivity extends Fragment {
                     if (cmbCode.getSelectedItem().toString().matches("Chưa Ghi") == false && cmbCode.getSelectedItem().toString().matches("Đã Ghi") == false)
                         CodeMoi = CNguoiDung.cmbCodeValue.get(cmbCode.getSelectedItemPosition());
                     if (CodeMoi != "") {
-                        String TieuThu = ws.TinhTieuThu(txtDanhBo.getText().toString().replace(" ", ""), _Nam, _Ky, CodeMoi, txtChiSo.getText().toString());
-                        String resultTienNuoc = ws.TinhTienNuoc(txtDanhBo.getText().toString().replace(" ", ""), txtGB.getText().toString(), txtDM.getText().toString(), TieuThu, _ChiTiet);
+                        task=new WSAsyncTask(getActivity());
+                        String TieuThu =(String)task.execute(new String[]{"TinhTieuThu", txtDanhBo.getText().toString().replace(" ", ""), _Nam, _Ky, CodeMoi, txtChiSo.getText().toString()}).get();
+                        task=new WSAsyncTask(getActivity());
+                        String resultTienNuoc = (String)task.execute(new String[]{"TinhTienNuoc", txtDanhBo.getText().toString().replace(" ", ""), txtGB.getText().toString(), txtDM.getText().toString(), TieuThu, _ChiTiet}).get();
 
                         String[]temp=resultTienNuoc.replace("[", "").replace("]", "").split(",");
                         _TienNuoc=temp[0];
@@ -123,7 +123,8 @@ public class GhiChiSoActivity extends Fragment {
                     if (cmbCode.getSelectedItem().toString().matches("Chưa Ghi") == false && cmbCode.getSelectedItem().toString().matches("Đã Ghi") == false)
                         CodeMoi = CNguoiDung.cmbCodeValue.get(cmbCode.getSelectedItemPosition());
                     if (CodeMoi != "") {
-                        String result = ws.CapNhat(_ID,CodeMoi,cmbCode.getSelectedItem().toString(),txtChiSo.getText().toString(),txtTieuThu.getText().toString(),_TienNuoc,_ChiTiet);
+                        task=new WSAsyncTask(getActivity());
+                        String result = (String)task.execute(new String[]{"CapNhat", _ID,CodeMoi,cmbCode.getSelectedItem().toString(),txtChiSo.getText().toString(),txtTieuThu.getText().toString(),_TienNuoc,_ChiTiet}).get();
                         Toast.makeText(getActivity(), result, Toast.LENGTH_SHORT).show();
                     }
                 }

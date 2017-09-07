@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/ghichisolayout"
-    tools:context="vn.com.abc.docsoandroid.GhiChiSoActivity">
+    tools:context="vn.com.abc.tanhoaandroid.GhiChiSoActivity">
 
     <LinearLayout
         android:layout_width="fill_parent"

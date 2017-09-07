@@ -1,4 +1,4 @@
-package vn.com.abc.docsoandroid;
+package vn.com.abc.tanhoaandroid;
 
 import android.support.design.widget.TabLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -10,7 +10,6 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Toast;
 
 public class DocSoActivity extends AppCompatActivity{
 

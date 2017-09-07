@@ -1,7 +1,8 @@
-package vn.com.abc.docsoandroid;
+package vn.com.abc.tanhoaandroid;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.StrictMode;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -17,16 +18,16 @@ import java.util.HashMap;
 
 public class DangNhapActivity extends AppCompatActivity {
 
-    CWebService ws = new CWebService();
-
+//    CWebService ws = new CWebService();
+private WSAsyncTask task;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         // permits to make a HttpURLConnection
-        if (android.os.Build.VERSION.SDK_INT > 9) {
-            StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
-            StrictMode.setThreadPolicy(policy);
-        }
+//        if (android.os.Build.VERSION.SDK_INT > 9) {
+//            StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+//            StrictMode.setThreadPolicy(policy);
+//        }
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dang_nhap);
@@ -47,14 +48,17 @@ public class DangNhapActivity extends AppCompatActivity {
                         return;
                     }
 
-                    SoapObject tbNguoiDung = ws.DangNhap(txtTaiKhoan.getText().toString(), txtMatKhau.getText().toString());
+                    task=new WSAsyncTask(DangNhapActivity.this);
+                    SoapObject tbNguoiDung=  (SoapObject) task.execute(new String[]{"DangNhap", txtTaiKhoan.getText().toString(), txtMatKhau.getText().toString()}).get();
                     if (tbNguoiDung != null) {
                         SoapObject nguoidung = (SoapObject) tbNguoiDung.getProperty(0);
                         CNguoiDung.MaND = nguoidung.getProperty("MaND").toString();
                         CNguoiDung.HoTen = nguoidung.getProperty("HoTen").toString();
                         CNguoiDung.May = nguoidung.getProperty("May").toString();
-                        CNguoiDung.tbDocSo = ws.GetDSDocSo(cmbNam.getSelectedItem().toString(), cmbKy.getSelectedItem().toString(), cmbDot.getSelectedItem().toString(), CNguoiDung.May);
-                        SoapObject tbCode = ws.GetDSCode();
+                        task=new WSAsyncTask(DangNhapActivity.this);
+                        CNguoiDung.tbDocSo = (SoapObject)task.execute(new String[]{"GetDSDocSo", cmbNam.getSelectedItem().toString(), cmbKy.getSelectedItem().toString(), cmbDot.getSelectedItem().toString(), CNguoiDung.May}).get();
+                        task=new WSAsyncTask(DangNhapActivity.this);
+                        SoapObject tbCode =(SoapObject)task.execute(new String[]{"GetDSCode"}).get();
                         if (tbCode != null) {
                             CNguoiDung.cmbCodeValue = new HashMap<Integer, String>();
                             CNguoiDung.cmbCodeDisplay = new String[tbCode.getPropertyCount()+2];
@@ -71,7 +75,7 @@ public class DangNhapActivity extends AppCompatActivity {
                                 CNguoiDung.cmbCodeDisplay[i+2] = obj.getProperty("TTDHN").toString();
                             }
                         }
-                        Toast.makeText(DangNhapActivity.this, "Thành công", Toast.LENGTH_SHORT).show();
+//                        Toast.makeText(DangNhapActivity.this, "Thành công", Toast.LENGTH_SHORT).show();
                         Intent returnIntent=new Intent();
                         setResult(Activity.RESULT_OK,returnIntent);
                         finish();

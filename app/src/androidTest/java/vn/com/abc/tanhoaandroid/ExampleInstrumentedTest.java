@@ -1,4 +1,4 @@
-package vn.com.abc.docsoandroid;
+package vn.com.abc.tanhoaandroid;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;

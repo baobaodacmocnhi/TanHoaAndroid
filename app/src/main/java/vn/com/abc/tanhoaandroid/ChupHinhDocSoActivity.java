@@ -1,11 +1,13 @@
-package vn.com.abc.docsoandroid;
+package vn.com.abc.tanhoaandroid;
 
 import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
 import android.location.Location;
+import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
@@ -35,8 +37,8 @@ public class ChupHinhDocSoActivity extends Fragment {
     private static final int REQUEST_ID_IMAGE_CAPTURE = 100;
     private static final int REQUEST_LOCATION_PERMISSION = 200;
     private String _imageFileName;
-    private Uri _imgUri;
-    private CWebService _ws = new CWebService();
+    private  Bitmap _image;
+    private WSAsyncTask _task;
 
     private static double Latitude, Longitude;
 
@@ -47,7 +49,6 @@ public class ChupHinhDocSoActivity extends Fragment {
 
         Button btnChupHinh = (Button) _rootView.findViewById(R.id.btnChupHinh);
         Button btnLuu = (Button) _rootView.findViewById(R.id.btnLuu);
-        final ImageView imageView = (ImageView) _rootView.findViewById(R.id.imageView);
 
         btnChupHinh.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -71,8 +72,8 @@ public class ChupHinhDocSoActivity extends Fragment {
             public void onClick(View v) {
                 try {
                     if (CNguoiDung.DanhBo != "" && CNguoiDung.MaND != "") {
-                        Bitmap image = BitmapFactory.decodeFile(_imageFileName);
-                        String imgString = Base64.encodeToString(getBytesFromBitmap(image), Base64.NO_WRAP);
+                        Bitmap reizeImage=Bitmap.createScaledBitmap(_image,1024,1024,false);
+                        String imgString = Base64.encodeToString(getBytesFromBitmap(reizeImage), Base64.NO_WRAP);
 
                         ActivityCompat.requestPermissions(getActivity(), new String[] {Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_LOCATION_PERMISSION);
                         GPSTracker gpsTracker = new GPSTracker(getContext());
@@ -83,8 +84,8 @@ public class ChupHinhDocSoActivity extends Fragment {
                         }else {
                             Toast.makeText(getContext(),"GPS unable to get Value",Toast.LENGTH_SHORT).show();
                         }
-
-                        String result = _ws.ThemHinhDHN(CNguoiDung.DanhBo, CNguoiDung.MaND, imgString, String.valueOf(Latitude), String.valueOf(Longitude));
+                        _task=new WSAsyncTask(getActivity());
+                        String result =  (String)_task.execute(new String[]{"ThemHinhDHN", CNguoiDung.DanhBo, CNguoiDung.MaND, imgString, String.valueOf(Latitude), String.valueOf(Longitude)}).get();
                         Toast.makeText(getActivity(), result, Toast.LENGTH_SHORT).show();
                     }
                 } catch (Exception ex) {
@@ -102,7 +103,9 @@ public class ChupHinhDocSoActivity extends Fragment {
         if (requestCode == REQUEST_ID_IMAGE_CAPTURE) {
             if (resultCode == Activity.RESULT_OK) {
                 ImageView imageView = (ImageView) _rootView.findViewById(R.id.imageView);
-                imageView.setImageURI(getImgUri());
+                 _image = BitmapFactory.decodeFile(_imageFileName);
+                _image=imageOreintationValidator(_image,_imageFileName);
+                imageView.setImageBitmap(_image);
             } else if (resultCode == Activity.RESULT_CANCELED) {
                 Toast.makeText(getActivity(), "Action canceled", Toast.LENGTH_SHORT).show();
             } else {
@@ -112,21 +115,22 @@ public class ChupHinhDocSoActivity extends Fragment {
     }
 
     public Uri setImageUri() {
+        Uri uri;
         File photoFile = createFile();
         if (Build.VERSION.SDK_INT < 21) {
             // Từ android 5.0 trở xuống. khi ta sử dụng FileProvider.getUriForFile() sẽ trả về ngoại lệ FileUriExposedException
             // Vì vậy mình sử dụng Uri.fromFile đề lấy ra uri cho file ảnh
             String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
             photoFile = new File(Environment.getExternalStorageDirectory() + "/DCIM/", "" + timeStamp + ".jpg");
-            _imgUri = Uri.fromFile(photoFile);
+            uri = Uri.fromFile(photoFile);
         } else {
             // từ android 5.0 trở lên ta có thể sử dụng Uri.fromFile() và FileProvider.getUriForFile() để trả về uri file sau khi chụp.
             // Nhưng bắt buộc từ Android 7.0 trở lên ta phải sử dụng FileProvider.getUriForFile() để trả về uri cho file đó.
             Uri photoURI = FileProvider.getUriForFile(getActivity(), "camera_fullsize", photoFile);
-            _imgUri = photoURI;
+            uri = photoURI;
         }
         _imageFileName = photoFile.getAbsolutePath();
-        return _imgUri;
+        return uri;
     }
 
     private File createFile() {
@@ -141,15 +145,50 @@ public class ChupHinhDocSoActivity extends Fragment {
         return file;
     }
 
-    public Uri getImgUri() {
-        return this._imgUri;
-    }
-
     // convert from bitmap to byte array
     public byte[] getBytesFromBitmap(Bitmap bitmap) {
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream);
         return stream.toByteArray();
+    }
+
+    private Bitmap imageOreintationValidator(Bitmap bitmap, String path) {
+
+        ExifInterface ei;
+        try {
+            ei = new ExifInterface(path);
+            int orientation = ei.getAttributeInt(ExifInterface.TAG_ORIENTATION,
+                    ExifInterface.ORIENTATION_NORMAL);
+            switch (orientation) {
+                case ExifInterface.ORIENTATION_ROTATE_90:
+                    bitmap = rotateImage(bitmap, 90);
+                    break;
+                case ExifInterface.ORIENTATION_ROTATE_180:
+                    bitmap = rotateImage(bitmap, 180);
+                    break;
+                case ExifInterface.ORIENTATION_ROTATE_270:
+                    bitmap = rotateImage(bitmap, 270);
+                    break;
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return bitmap;
+    }
+
+    private Bitmap rotateImage(Bitmap source, float angle) {
+
+        Bitmap bitmap = null;
+        Matrix matrix = new Matrix();
+        matrix.postRotate(angle);
+        try {
+            bitmap = Bitmap.createBitmap(source, 0, 0, source.getWidth(), source.getHeight(),
+                    matrix, true);
+        } catch (OutOfMemoryError err) {
+            err.printStackTrace();
+        }
+        return bitmap;
     }
 
 }

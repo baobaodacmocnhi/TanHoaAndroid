@@ -1,4 +1,4 @@
-package vn.com.abc.docsoandroid;
+package vn.com.abc.tanhoaandroid;
 
 import android.app.Activity;
 import android.view.LayoutInflater;

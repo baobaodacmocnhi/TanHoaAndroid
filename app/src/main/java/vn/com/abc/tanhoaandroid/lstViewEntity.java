@@ -1,4 +1,4 @@
-package vn.com.abc.docsoandroid;
+package vn.com.abc.tanhoaandroid;
 
 /**
  * Created by user on 22/08/2017.

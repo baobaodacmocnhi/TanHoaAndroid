@@ -1,4 +1,6 @@
-package vn.com.abc.docsoandroid;
+package vn.com.abc.tanhoaandroid;
+
+import android.os.AsyncTask;
 
 import org.ksoap2.SoapEnvelope;
 import org.ksoap2.serialization.PropertyInfo;
