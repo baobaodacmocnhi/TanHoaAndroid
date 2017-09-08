@@ -1,6 +1,8 @@
 package vn.com.abc.tanhoaandroid;
 
+import android.Manifest;
 import android.support.design.widget.TabLayout;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 
@@ -12,6 +14,7 @@ import android.os.Bundle;
 import android.view.View;
 
 public class DocSoActivity extends AppCompatActivity{
+
 
     /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide
@@ -54,9 +57,7 @@ public class DocSoActivity extends AppCompatActivity{
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(mViewPager);
 
-
     }
-
 
     /**
      * A placeholder fragment containing a simple view.

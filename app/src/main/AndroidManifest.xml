@@ -15,7 +15,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name="vn.com.abc.tanhoaandroid.MainActivity">
+        <activity
+            android:name=".MainActivity"
+            android:windowSoftInputMode="stateHidden|adjustPan">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -23,10 +25,10 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="vn.com.abc.tanhoaandroid.DangNhapActivity"
+            android:name=".DangNhapActivity"
             android:label="@string/title_activity_dang_nhap" />
         <activity
-            android:name="vn.com.abc.tanhoaandroid.DocSoActivity"
+            android:name=".DocSoActivity"
             android:label="@string/title_activity_doc_so"
             android:theme="@style/AppTheme.NoActionBar" />
 
@@ -37,9 +39,13 @@
             android:grantUriPermissions="true">
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
-                android:resource="@xml/path_files">
-            </meta-data>
+                android:resource="@xml/path_files" />
         </provider>
+
+        <service
+            android:name=".GPSTracker"
+            android:enabled="true"
+            android:exported="true" />
 
     </application>
 

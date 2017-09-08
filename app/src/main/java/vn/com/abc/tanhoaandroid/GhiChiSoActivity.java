@@ -1,6 +1,8 @@
 package vn.com.abc.tanhoaandroid;
 
+import android.Manifest;
 import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -18,21 +20,22 @@ import java.util.Map;
 
 public class GhiChiSoActivity extends Fragment {
 
+    private final int REQUEST_LOCATION_PERMISSION = 200;
     private View _rootView;
     private Integer _index = 0;
-    private String _ID = "";
-    private String _Nam = "";
-    private String _Ky = "";
-    private String _ChiTiet="";
-    private  String _TienNuoc="";
+    private String _ID, _Nam, _Ky, _GiaBan, _PhiBVMT, _ThueGTGT, _TongCong, _ChiTiet = "";
     private Spinner cmbCode;
-private WSAsyncTask task;
+    private WSAsyncTask task;
+    private GPSTracker _gpsTracker;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
         _rootView = inflater.inflate(R.layout.activity_ghi_chi_so, container, false);
+
+        ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_LOCATION_PERMISSION);
+        _gpsTracker = new GPSTracker(getContext());
 
         try {
             Bundle bundle = getArguments();
@@ -86,24 +89,25 @@ private WSAsyncTask task;
                     if (cmbCode.getSelectedItem().toString().matches("Chưa Ghi") == false && cmbCode.getSelectedItem().toString().matches("Đã Ghi") == false)
                         CodeMoi = CNguoiDung.cmbCodeValue.get(cmbCode.getSelectedItemPosition());
                     if (CodeMoi != "") {
-                        task=new WSAsyncTask(getActivity());
-                        String TieuThu =(String)task.execute(new String[]{"TinhTieuThu", txtDanhBo.getText().toString().replace(" ", ""), _Nam, _Ky, CodeMoi, txtChiSo.getText().toString()}).get();
-                        task=new WSAsyncTask(getActivity());
-                        String resultTienNuoc = (String)task.execute(new String[]{"TinhTienNuoc", txtDanhBo.getText().toString().replace(" ", ""), txtGB.getText().toString(), txtDM.getText().toString(), TieuThu, _ChiTiet}).get();
+                        task = new WSAsyncTask(getActivity());
+                        String TieuThu = (String) task.execute(new String[]{"TinhTieuThu", txtDanhBo.getText().toString().replace(" ", ""), _Nam, _Ky, CodeMoi, txtChiSo.getText().toString()}).get();
+                        task = new WSAsyncTask(getActivity());
+                        String resultTienNuoc = (String) task.execute(new String[]{"TinhTienNuoc", txtDanhBo.getText().toString().replace(" ", ""), txtGB.getText().toString(), txtDM.getText().toString(), TieuThu}).get();
 
-                        String[]temp=resultTienNuoc.replace("[", "").replace("]", "").split(",");
-                        _TienNuoc=temp[0];
+                        String[] temp = resultTienNuoc.replace("[", "").replace("]", "").split(",");
+                        _GiaBan = temp[0];
+                        _PhiBVMT = temp[1];
+                        _ThueGTGT = temp[2];
+                        _TongCong = temp[3];
+                        _ChiTiet = temp[4];
 
-                        Double TongTien=Double.parseDouble(temp[0])*1.15;
-                        Long TongTienRound=Math.round(TongTien);
-                        _ChiTiet=temp[1];
+//                        Double TongTien = Double.parseDouble(temp[0]) * 1.15;
+//                        Long TongTienRound = Math.round(TongTien);
 
                         txtTieuThu.setText(TieuThu);
-                        txtTongTien.setText((TongTienRound).toString());
+                        txtTongTien.setText(_TongCong);
                     }
-                }
-                catch (Exception ex)
-                {
+                } catch (Exception ex) {
                     Toast.makeText(getActivity(), ex.toString(), Toast.LENGTH_SHORT).show();
                 }
             }
@@ -114,7 +118,7 @@ private WSAsyncTask task;
             @Override
             public void onClick(View v) {
                 try {
-                    EditText txtDanhBo = (EditText) _rootView.findViewById(R.id.txtDanhBo);
+//                    EditText txtDanhBo = (EditText) _rootView.findViewById(R.id.txtDanhBo);
                     cmbCode = (Spinner) _rootView.findViewById(R.id.cmbCode);
                     EditText txtChiSo = (EditText) _rootView.findViewById(R.id.txtChiSo);
                     EditText txtTieuThu = (EditText) _rootView.findViewById(R.id.txtTieuThu);
@@ -123,13 +127,18 @@ private WSAsyncTask task;
                     if (cmbCode.getSelectedItem().toString().matches("Chưa Ghi") == false && cmbCode.getSelectedItem().toString().matches("Đã Ghi") == false)
                         CodeMoi = CNguoiDung.cmbCodeValue.get(cmbCode.getSelectedItemPosition());
                     if (CodeMoi != "") {
-                        task=new WSAsyncTask(getActivity());
-                        String result = (String)task.execute(new String[]{"CapNhat", _ID,CodeMoi,cmbCode.getSelectedItem().toString(),txtChiSo.getText().toString(),txtTieuThu.getText().toString(),_TienNuoc,_ChiTiet}).get();
-                        Toast.makeText(getActivity(), result, Toast.LENGTH_SHORT).show();
+                        if (_gpsTracker.canGetLocation()) {
+                            task = new WSAsyncTask(getActivity());
+                            String result = (String) task.execute(new String[]{"CapNhat", _ID, CodeMoi, cmbCode.getSelectedItem().toString(), txtChiSo.getText().toString(),
+                                    txtTieuThu.getText().toString(), _GiaBan, _PhiBVMT, _ThueGTGT, _TongCong, _ChiTiet, String.valueOf(_gpsTracker.getLatitude()), String.valueOf(_gpsTracker.getLongitude())}).get();
+                            Toast.makeText(getActivity(), result, Toast.LENGTH_SHORT).show();
+                        } else {
+                            _gpsTracker.showSettingsAlert();
+                        }
+                    } else {
+                        Toast.makeText(getContext(), "Chưa chọn Code", Toast.LENGTH_SHORT).show();
                     }
-                }
-                catch (Exception ex)
-                {
+                } catch (Exception ex) {
                     Toast.makeText(getActivity(), ex.toString(), Toast.LENGTH_SHORT).show();
                 }
             }
@@ -144,6 +153,12 @@ private WSAsyncTask task;
         });
 
         return _rootView;
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+//        _gpsTracker.stopUsingGPS();
     }
 
     private void GetDanhBo(String ID) {
@@ -216,7 +231,7 @@ private WSAsyncTask task;
             _ID = obj.getProperty("DocSoID").toString();
             _Nam = obj.getProperty("Nam").toString();
             _Ky = obj.getProperty("Ky").toString();
-CNguoiDung.DanhBo=obj.getProperty("DanhBa").toString();
+            CNguoiDung.DanhBo = obj.getProperty("DanhBa").toString();
 
             String DanhBo = new StringBuilder(obj.getProperty("DanhBa").toString()).insert(obj.getProperty("DanhBa").toString().length() - 7, " ").toString();
             DanhBo = new StringBuilder(DanhBo).insert(DanhBo.length() - 4, " ").toString();
@@ -226,7 +241,7 @@ CNguoiDung.DanhBo=obj.getProperty("DanhBa").toString();
             MLT = new StringBuilder(MLT).insert(MLT.length() - 5, " ").toString();
             txtMLT.setText(MLT);
 
-//                    txtHoTen.setText(obj.getProperty("HoTen").toString());
+            txtHoTen.setText(obj.getProperty("HoTen").toString());
             txtDiaChi.setText(obj.getProperty("SoNhaCu").toString() + " " + obj.getProperty("Duong").toString());
             txtGB.setText(obj.getProperty("GB").toString());
             txtDienThoai.setText(obj.getProperty("SDT").toString());
@@ -236,8 +251,8 @@ CNguoiDung.DanhBo=obj.getProperty("DanhBa").toString();
             txtHieu.setText(obj.getProperty("HieuCu").toString());
             txtCT.setText(obj.getProperty("ChiThanCu").toString());
             txtTongTien.setText(obj.getProperty("TongTien").toString());
-//                    txtTT.setText(obj.getProperty("").toString());
-            txtCC.setText(obj.getProperty("ChiCoCu").toString());
+//            txtTT.setText(obj.getProperty("").toString());
+//            txtCC.setText(obj.getP♥roperty("ChiCoCu").toString());
 //            Integer TT = 0;//tiêu thụ
 //            Integer TB = 0;//trung bình cộng
             try {

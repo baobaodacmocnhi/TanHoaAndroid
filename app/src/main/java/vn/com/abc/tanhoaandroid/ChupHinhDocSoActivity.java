@@ -34,19 +34,21 @@ import java.util.Date;
 public class ChupHinhDocSoActivity extends Fragment {
 
     private View _rootView;
-    private static final int REQUEST_ID_IMAGE_CAPTURE = 100;
-    private static final int REQUEST_LOCATION_PERMISSION = 200;
+    private final int REQUEST_ID_IMAGE_CAPTURE = 100;
+    private final int REQUEST_LOCATION_PERMISSION = 200;
     private String _imageFileName;
-    private  Bitmap _image;
+    private Bitmap _image;
     private WSAsyncTask _task;
-
-    private static double Latitude, Longitude;
+    private GPSTracker _gpsTracker;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+
         _rootView = inflater.inflate(R.layout.activity_chup_hinh_doc_so, container, false);
 
+        ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_LOCATION_PERMISSION);
+        _gpsTracker = new GPSTracker(getContext());
         Button btnChupHinh = (Button) _rootView.findViewById(R.id.btnChupHinh);
         Button btnLuu = (Button) _rootView.findViewById(R.id.btnLuu);
 
@@ -72,28 +74,22 @@ public class ChupHinhDocSoActivity extends Fragment {
             public void onClick(View v) {
                 try {
                     if (CNguoiDung.DanhBo != "" && CNguoiDung.MaND != "") {
-                        Bitmap reizeImage=Bitmap.createScaledBitmap(_image,1024,1024,false);
+                        Bitmap reizeImage = Bitmap.createScaledBitmap(_image, 1024, 1024, false);
                         String imgString = Base64.encodeToString(getBytesFromBitmap(reizeImage), Base64.NO_WRAP);
 
-                        ActivityCompat.requestPermissions(getActivity(), new String[] {Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_LOCATION_PERMISSION);
-                        GPSTracker gpsTracker = new GPSTracker(getContext());
-                        Location location = gpsTracker.getLocation();
-                        if( location != null){
-                            Latitude = location.getLatitude();
-                            Longitude = location.getLongitude();
-                        }else {
-                            Toast.makeText(getContext(),"GPS unable to get Value",Toast.LENGTH_SHORT).show();
+                        if (_gpsTracker.canGetLocation()) {
+                            _task = new WSAsyncTask(getActivity());
+                            String result = (String) _task.execute(new String[]{"ThemHinhDHN", CNguoiDung.DanhBo, CNguoiDung.MaND, imgString, String.valueOf(_gpsTracker.getLatitude()), String.valueOf(_gpsTracker.getLongitude())}).get();
+                            Toast.makeText(getActivity(), result, Toast.LENGTH_SHORT).show();
+                        } else {
+                            _gpsTracker.showSettingsAlert();
                         }
-                        _task=new WSAsyncTask(getActivity());
-                        String result =  (String)_task.execute(new String[]{"ThemHinhDHN", CNguoiDung.DanhBo, CNguoiDung.MaND, imgString, String.valueOf(Latitude), String.valueOf(Longitude)}).get();
-                        Toast.makeText(getActivity(), result, Toast.LENGTH_SHORT).show();
                     }
                 } catch (Exception ex) {
                     Toast.makeText(getActivity(), ex.toString(), Toast.LENGTH_SHORT).show();
                 }
             }
         });
-
         return _rootView;
     }
 
@@ -103,8 +99,8 @@ public class ChupHinhDocSoActivity extends Fragment {
         if (requestCode == REQUEST_ID_IMAGE_CAPTURE) {
             if (resultCode == Activity.RESULT_OK) {
                 ImageView imageView = (ImageView) _rootView.findViewById(R.id.imageView);
-                 _image = BitmapFactory.decodeFile(_imageFileName);
-                _image=imageOreintationValidator(_image,_imageFileName);
+                _image = BitmapFactory.decodeFile(_imageFileName);
+                _image = imageOreintationValidator(_image, _imageFileName);
                 imageView.setImageBitmap(_image);
             } else if (resultCode == Activity.RESULT_CANCELED) {
                 Toast.makeText(getActivity(), "Action canceled", Toast.LENGTH_SHORT).show();
@@ -112,6 +108,12 @@ public class ChupHinhDocSoActivity extends Fragment {
                 Toast.makeText(getActivity(), "Action Failed", Toast.LENGTH_SHORT).show();
             }
         }
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+//        _gpsTracker.stopUsingGPS();
     }
 
     public Uri setImageUri() {
