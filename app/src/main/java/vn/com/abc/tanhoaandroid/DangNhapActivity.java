@@ -1,9 +1,11 @@
 package vn.com.abc.tanhoaandroid;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.StrictMode;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -31,6 +33,10 @@ private WSAsyncTask task;
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dang_nhap);
+
+        ActivityCompat.requestPermissions(DangNhapActivity.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, CContanstVariable.REQUEST_LOCATION_PERMISSION);
+        Intent intent = new Intent(DangNhapActivity.this, GPSTracker.class);
+        startService(intent);
 
         Button btnDangNhap = (Button) findViewById(R.id.btnDangNhap);
         btnDangNhap.setOnClickListener(new View.OnClickListener() {

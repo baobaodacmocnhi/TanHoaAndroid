@@ -58,7 +58,7 @@ private CWebService _ws=new CWebService();
                 case "TinhTienNuoc":
                     return _ws.TinhTienNuoc(params[1], params[2], params[3], params[4]);
                 case "CapNhat":
-                    return _ws.CapNhat(params[1], params[2], params[3], params[4],params[5], params[6],params[7],params[8],params[9],params[10],params[11],params[12]);
+                    return _ws.CapNhat(params[1], params[2], params[3], params[4],params[5], params[6],params[7],params[8],params[9],params[10],params[11]);
                 case "ThemHinhDHN":
                     return _ws.ThemHinhDHN(params[1], params[2], params[3], params[4],params[5]);
 

@@ -235,7 +235,7 @@ public class CWebService {
         return ExcuteReturnValue(request, SOAP_ACTION);
     }
 
-    public String CapNhat(String ID, String CodeMoi, String TTDHNMoi, String CSMoi, String TieuThuMoi, String GiaBan, String PhiBVMT, String ThueGTGT, String TongCong, String ChiTiet, String Latitude, String Longitude) {
+    public String CapNhat(String ID, String DanhBo, String Nam, String Ky, String CodeMoi, String TTDHNMoi, String CSMoi, String GiaBieu, String DinhMuc, String Latitude, String Longitude) {
         String SOAP_ACTION = "http://tempuri.org/DS_CapNhat";
         String OPERATION_NAME = "DS_CapNhat";
         SoapObject request = new SoapObject(WSDL_TARGET_NAMESPACE, OPERATION_NAME);
@@ -243,6 +243,24 @@ public class CWebService {
         PropertyInfo pi = new PropertyInfo();
         pi.setName("ID");
         pi.setValue(ID);
+        pi.setType(String.class);
+        request.addProperty(pi);
+
+        pi = new PropertyInfo();
+        pi.setName("DanhBo");
+        pi.setValue(DanhBo);
+        pi.setType(String.class);
+        request.addProperty(pi);
+
+        pi = new PropertyInfo();
+        pi.setName("Nam");
+        pi.setValue(Nam);
+        pi.setType(String.class);
+        request.addProperty(pi);
+
+        pi = new PropertyInfo();
+        pi.setName("Ky");
+        pi.setValue(Ky);
         pi.setType(String.class);
         request.addProperty(pi);
 
@@ -265,38 +283,14 @@ public class CWebService {
         request.addProperty(pi);
 
         pi = new PropertyInfo();
-        pi.setName("TieuThuMoi");
-        pi.setValue(TieuThuMoi);
+        pi.setName("GiaBieu");
+        pi.setValue(GiaBieu);
         pi.setType(String.class);
         request.addProperty(pi);
 
         pi = new PropertyInfo();
-        pi.setName("GiaBan");
-        pi.setValue(GiaBan);
-        pi.setType(String.class);
-        request.addProperty(pi);
-
-        pi = new PropertyInfo();
-        pi.setName("PhiBVMT");
-        pi.setValue(PhiBVMT);
-        pi.setType(String.class);
-        request.addProperty(pi);
-
-        pi = new PropertyInfo();
-        pi.setName("ThueGTGT");
-        pi.setValue(ThueGTGT);
-        pi.setType(String.class);
-        request.addProperty(pi);
-
-        pi = new PropertyInfo();
-        pi.setName("TongCong");
-        pi.setValue(TongCong);
-        pi.setType(String.class);
-        request.addProperty(pi);
-
-        pi = new PropertyInfo();
-        pi.setName("ChiTiet");
-        pi.setValue(ChiTiet);
+        pi.setName("DinhMuc");
+        pi.setValue(DinhMuc);
         pi.setType(String.class);
         request.addProperty(pi);
 
@@ -312,7 +306,7 @@ public class CWebService {
         pi.setType(String.class);
         request.addProperty(pi);
 
-        return ExcuteNonReturn(request, SOAP_ACTION);
+        return ExcuteReturnValue(request, SOAP_ACTION);
     }
 
     public String ThemHinhDHN(String DanhBo, String CreateBy, String imageStr, String Latitude, String Longitude) {

@@ -1,8 +1,6 @@
 package vn.com.abc.tanhoaandroid;
 
-import android.Manifest;
 import android.support.annotation.Nullable;
-import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -20,22 +18,17 @@ import java.util.Map;
 
 public class GhiChiSoActivity extends Fragment {
 
-    private final int REQUEST_LOCATION_PERMISSION = 200;
     private View _rootView;
     private Integer _index = 0;
     private String _ID, _Nam, _Ky, _GiaBan, _PhiBVMT, _ThueGTGT, _TongCong, _ChiTiet = "";
     private Spinner cmbCode;
     private WSAsyncTask task;
-    private GPSTracker _gpsTracker;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
         _rootView = inflater.inflate(R.layout.activity_ghi_chi_so, container, false);
-
-        ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_LOCATION_PERMISSION);
-        _gpsTracker = new GPSTracker(getContext());
 
         try {
             Bundle bundle = getArguments();
@@ -72,8 +65,49 @@ public class GhiChiSoActivity extends Fragment {
             }
         });
 
-        Button btnTinhTien = (Button) _rootView.findViewById(R.id.btnTinhTien);
-        btnTinhTien.setOnClickListener(new View.OnClickListener() {
+//        Button btnTinhTien = (Button) _rootView.findViewById(R.id.btnTinhTien);
+//        btnTinhTien.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                try {
+//                    EditText txtDanhBo = (EditText) _rootView.findViewById(R.id.txtDanhBo);
+//                    cmbCode = (Spinner) _rootView.findViewById(R.id.cmbCode);
+//                    EditText txtChiSo = (EditText) _rootView.findViewById(R.id.txtChiSo);
+//                    EditText txtTieuThu = (EditText) _rootView.findViewById(R.id.txtTieuThu);
+//                    EditText txtGB = (EditText) _rootView.findViewById(R.id.txtGB);
+//                    EditText txtDM = (EditText) _rootView.findViewById(R.id.txtDM);
+//                    EditText txtTongTien = (EditText) _rootView.findViewById(R.id.txtTongTien);
+//
+//                    String CodeMoi = "";
+//                    if (cmbCode.getSelectedItem().toString().matches("Chưa Ghi") == false && cmbCode.getSelectedItem().toString().matches("Đã Ghi") == false)
+//                        CodeMoi = CNguoiDung.cmbCodeValue.get(cmbCode.getSelectedItemPosition());
+//                    if (CodeMoi != "") {
+//                        task = new WSAsyncTask(getActivity());
+//                        String TieuThu = (String) task.execute(new String[]{"TinhTieuThu", txtDanhBo.getText().toString().replace(" ", ""), _Nam, _Ky, CodeMoi, txtChiSo.getText().toString()}).get();
+//                        task = new WSAsyncTask(getActivity());
+//                        String resultTienNuoc = (String) task.execute(new String[]{"TinhTienNuoc", txtDanhBo.getText().toString().replace(" ", ""), txtGB.getText().toString(), txtDM.getText().toString(), TieuThu}).get();
+//
+//                        String[] temp = resultTienNuoc.replace("[", "").replace("]", "").split(",");
+//                        _GiaBan = temp[0];
+//                        _PhiBVMT = temp[1];
+//                        _ThueGTGT = temp[2];
+//                        _TongCong = temp[3];
+//                        _ChiTiet = temp[4];
+//
+////                        Double TongTien = Double.parseDouble(temp[0]) * 1.15;
+////                        Long TongTienRound = Math.round(TongTien);
+//
+//                        txtTieuThu.setText(TieuThu);
+//                        txtTongTien.setText(_TongCong);
+//                    }
+//                } catch (Exception ex) {
+//                    Toast.makeText(getActivity(), ex.toString(), Toast.LENGTH_SHORT).show();
+//                }
+//            }
+//        });
+
+        Button btnCapNhat = (Button) _rootView.findViewById(R.id.btnCapNhat);
+        btnCapNhat.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 try {
@@ -89,52 +123,21 @@ public class GhiChiSoActivity extends Fragment {
                     if (cmbCode.getSelectedItem().toString().matches("Chưa Ghi") == false && cmbCode.getSelectedItem().toString().matches("Đã Ghi") == false)
                         CodeMoi = CNguoiDung.cmbCodeValue.get(cmbCode.getSelectedItemPosition());
                     if (CodeMoi != "") {
-                        task = new WSAsyncTask(getActivity());
-                        String TieuThu = (String) task.execute(new String[]{"TinhTieuThu", txtDanhBo.getText().toString().replace(" ", ""), _Nam, _Ky, CodeMoi, txtChiSo.getText().toString()}).get();
-                        task = new WSAsyncTask(getActivity());
-                        String resultTienNuoc = (String) task.execute(new String[]{"TinhTienNuoc", txtDanhBo.getText().toString().replace(" ", ""), txtGB.getText().toString(), txtDM.getText().toString(), TieuThu}).get();
-
-                        String[] temp = resultTienNuoc.replace("[", "").replace("]", "").split(",");
-                        _GiaBan = temp[0];
-                        _PhiBVMT = temp[1];
-                        _ThueGTGT = temp[2];
-                        _TongCong = temp[3];
-                        _ChiTiet = temp[4];
-
-//                        Double TongTien = Double.parseDouble(temp[0]) * 1.15;
-//                        Long TongTienRound = Math.round(TongTien);
-
-                        txtTieuThu.setText(TieuThu);
-                        txtTongTien.setText(_TongCong);
-                    }
-                } catch (Exception ex) {
-                    Toast.makeText(getActivity(), ex.toString(), Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
-
-        Button btnCapNhat = (Button) _rootView.findViewById(R.id.btnCapNhat);
-        btnCapNhat.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                try {
-//                    EditText txtDanhBo = (EditText) _rootView.findViewById(R.id.txtDanhBo);
-                    cmbCode = (Spinner) _rootView.findViewById(R.id.cmbCode);
-                    EditText txtChiSo = (EditText) _rootView.findViewById(R.id.txtChiSo);
-                    EditText txtTieuThu = (EditText) _rootView.findViewById(R.id.txtTieuThu);
-
-                    String CodeMoi = "";
-                    if (cmbCode.getSelectedItem().toString().matches("Chưa Ghi") == false && cmbCode.getSelectedItem().toString().matches("Đã Ghi") == false)
-                        CodeMoi = CNguoiDung.cmbCodeValue.get(cmbCode.getSelectedItemPosition());
-                    if (CodeMoi != "") {
-                        if (_gpsTracker.canGetLocation()) {
                             task = new WSAsyncTask(getActivity());
-                            String result = (String) task.execute(new String[]{"CapNhat", _ID, CodeMoi, cmbCode.getSelectedItem().toString(), txtChiSo.getText().toString(),
-                                    txtTieuThu.getText().toString(), _GiaBan, _PhiBVMT, _ThueGTGT, _TongCong, _ChiTiet, String.valueOf(_gpsTracker.getLatitude()), String.valueOf(_gpsTracker.getLongitude())}).get();
-                            Toast.makeText(getActivity(), result, Toast.LENGTH_SHORT).show();
-                        } else {
-                            _gpsTracker.showSettingsAlert();
-                        }
+                            String result = (String) task.execute(new String[]{"CapNhat", _ID,  txtDanhBo.getText().toString().replace(" ", ""),_Nam, _Ky,CodeMoi, cmbCode.getSelectedItem().toString(), txtChiSo.getText().toString(),
+                                    txtGB.getText().toString(),txtDM.getText().toString(), String.valueOf(CContanstVariable.Latitude), String.valueOf(CContanstVariable.Longitude)}).get();
+                        String[] temp = result.replace("[", "").replace("]", "").split(",");
+                        String Success = temp[0];
+                        String TieuThu = temp[1];
+                        String TongCong = temp[2];
+                        String StrShow="";
+                        txtTieuThu.setText(TieuThu);
+                        txtTongTien.setText(TongCong);
+                        if (Boolean.parseBoolean(Success) == true)
+                            StrShow= "Thành Công";
+                        else
+                            StrShow= "Thất Bại";
+                        Toast.makeText(getActivity(), StrShow, Toast.LENGTH_SHORT).show();
                     } else {
                         Toast.makeText(getContext(), "Chưa chọn Code", Toast.LENGTH_SHORT).show();
                     }
@@ -153,12 +156,6 @@ public class GhiChiSoActivity extends Fragment {
         });
 
         return _rootView;
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-//        _gpsTracker.stopUsingGPS();
     }
 
     private void GetDanhBo(String ID) {

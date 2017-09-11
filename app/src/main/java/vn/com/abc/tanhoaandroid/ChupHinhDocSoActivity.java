@@ -1,19 +1,16 @@
 package vn.com.abc.tanhoaandroid;
 
-import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
-import android.location.Location;
 import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.annotation.Nullable;
-import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.FileProvider;
 import android.os.Bundle;
@@ -34,12 +31,10 @@ import java.util.Date;
 public class ChupHinhDocSoActivity extends Fragment {
 
     private View _rootView;
-    private final int REQUEST_ID_IMAGE_CAPTURE = 100;
-    private final int REQUEST_LOCATION_PERMISSION = 200;
+
     private String _imageFileName;
     private Bitmap _image;
     private WSAsyncTask _task;
-    private GPSTracker _gpsTracker;
 
     @Nullable
     @Override
@@ -47,8 +42,6 @@ public class ChupHinhDocSoActivity extends Fragment {
 
         _rootView = inflater.inflate(R.layout.activity_chup_hinh_doc_so, container, false);
 
-        ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_LOCATION_PERMISSION);
-        _gpsTracker = new GPSTracker(getContext());
         Button btnChupHinh = (Button) _rootView.findViewById(R.id.btnChupHinh);
         Button btnLuu = (Button) _rootView.findViewById(R.id.btnLuu);
 
@@ -60,7 +53,7 @@ public class ChupHinhDocSoActivity extends Fragment {
                     if (takePictureIntent.resolveActivity(getActivity().getPackageManager()) != null) {
                         takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, setImageUri()); // put uri file khi mà mình muốn lưu ảnh sau khi chụp như thế nào  ?
                         takePictureIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
-                        startActivityForResult(takePictureIntent, REQUEST_ID_IMAGE_CAPTURE);
+                        startActivityForResult(takePictureIntent, CContanstVariable.REQUEST_IMAGE_CAPTURE_PERMISSION);
                     }
 
                 } catch (Exception ex) {
@@ -77,13 +70,10 @@ public class ChupHinhDocSoActivity extends Fragment {
                         Bitmap reizeImage = Bitmap.createScaledBitmap(_image, 1024, 1024, false);
                         String imgString = Base64.encodeToString(getBytesFromBitmap(reizeImage), Base64.NO_WRAP);
 
-                        if (_gpsTracker.canGetLocation()) {
                             _task = new WSAsyncTask(getActivity());
-                            String result = (String) _task.execute(new String[]{"ThemHinhDHN", CNguoiDung.DanhBo, CNguoiDung.MaND, imgString, String.valueOf(_gpsTracker.getLatitude()), String.valueOf(_gpsTracker.getLongitude())}).get();
+                            String result = (String) _task.execute(new String[]{"ThemHinhDHN", CNguoiDung.DanhBo, CNguoiDung.MaND, imgString, String.valueOf(CContanstVariable.Latitude), String.valueOf(CContanstVariable.Longitude)}).get();
                             Toast.makeText(getActivity(), result, Toast.LENGTH_SHORT).show();
-                        } else {
-                            _gpsTracker.showSettingsAlert();
-                        }
+
                     }
                 } catch (Exception ex) {
                     Toast.makeText(getActivity(), ex.toString(), Toast.LENGTH_SHORT).show();
@@ -96,7 +86,7 @@ public class ChupHinhDocSoActivity extends Fragment {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == REQUEST_ID_IMAGE_CAPTURE) {
+        if (requestCode == CContanstVariable.REQUEST_IMAGE_CAPTURE_PERMISSION) {
             if (resultCode == Activity.RESULT_OK) {
                 ImageView imageView = (ImageView) _rootView.findViewById(R.id.imageView);
                 _image = BitmapFactory.decodeFile(_imageFileName);
@@ -108,12 +98,6 @@ public class ChupHinhDocSoActivity extends Fragment {
                 Toast.makeText(getActivity(), "Action Failed", Toast.LENGTH_SHORT).show();
             }
         }
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-//        _gpsTracker.stopUsingGPS();
     }
 
     public Uri setImageUri() {
