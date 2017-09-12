@@ -5,7 +5,7 @@ android {
     buildToolsVersion "26.0.1"
     defaultConfig {
         applicationId "vn.com.abc.docsoandroid"
-        minSdkVersion 23
+        minSdkVersion 15
         targetSdkVersion 25
         versionCode 1
         versionName "1.0"
@@ -23,8 +23,10 @@ android {
                     project.ext { appName = 'TanHoa' }
                     def formattedDate = new Date().format('yyyyMMdd')
                     def newName = output.outputFile.name
+//                    newName = newName.replace("app-", "$project.ext.appName-")
+//                    newName = newName.replace("-debug", "-release " + formattedDate)
                     newName = newName.replace("app-", "$project.ext.appName-")
-                    newName = newName.replace("-debug", "-release " + formattedDate)
+                    newName = newName.replace("-debug", "")
                     output.outputFile = new File(output.outputFile.parent, newName)
                 }
             }
