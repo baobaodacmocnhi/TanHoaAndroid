@@ -106,8 +106,8 @@ public class GhiChiSoActivity extends Fragment {
 //            }
 //        });
 
-        Button btnCapNhat = (Button) _rootView.findViewById(R.id.btnCapNhat);
-        btnCapNhat.setOnClickListener(new View.OnClickListener() {
+        Button btnLuu = (Button) _rootView.findViewById(R.id.btnLuu);
+        btnLuu.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 try {
@@ -133,8 +133,17 @@ public class GhiChiSoActivity extends Fragment {
                         String StrShow="";
                         txtTieuThu.setText(TieuThu);
                         txtTongTien.setText(TongCong);
-                        if (Boolean.parseBoolean(Success) == true)
-                            StrShow= "Thành Công";
+                        if (Boolean.parseBoolean(Success) == true) {
+                            StrShow = "Thành Công";
+                            ///cập nhật lại SoapObject
+//                            for (int i = 0; i < CNguoiDung.tbDocSoFilter.getPropertyCount(); i++) {
+//                                SoapObject obj = (SoapObject) CNguoiDung.tbDocSoFilter.getProperty(i);
+//                                if (obj.getProperty("DocSoID").toString().matches(_ID) == true) {
+//                                    obj.setProperty("CodeMoi","");
+//                                    break;
+//                                }
+//                            }
+                        }
                         else
                             StrShow= "Thất Bại";
                         Toast.makeText(getActivity(), StrShow, Toast.LENGTH_SHORT).show();
@@ -283,7 +292,7 @@ public class GhiChiSoActivity extends Fragment {
             txt3T.setText(obj.getProperty("TBTT").toString());
 
             try {
-                Integer index = 0;
+                Integer index = 2;
                 for (Map.Entry<Integer, String> entry : CNguoiDung.cmbCodeValue.entrySet()) {
                     if (entry.getValue().equals(obj.getProperty("CodeMoi").toString())) {
                         index = entry.getKey();
@@ -292,7 +301,7 @@ public class GhiChiSoActivity extends Fragment {
                 }
                 cmbCode.setSelection(index);
             } catch (Exception ex) {
-                cmbCode.setSelection(0);
+                cmbCode.setSelection(2);
             }
             txtChiSo.setText(obj.getProperty("CSMoi").toString());
             txtTieuThu.setText(obj.getProperty("TieuThuMoi").toString());

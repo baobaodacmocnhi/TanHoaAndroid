@@ -32,8 +32,8 @@ public class ChupHinhDocSoActivity extends Fragment {
 
     private View _rootView;
 
-    private String _imageFileName;
-    private Bitmap _image;
+    private String _imageFileName="";
+    private Bitmap _image=null;
     private WSAsyncTask _task;
 
     @Nullable
@@ -66,7 +66,7 @@ public class ChupHinhDocSoActivity extends Fragment {
             @Override
             public void onClick(View v) {
                 try {
-                    if (CNguoiDung.DanhBo != "" && CNguoiDung.MaND != "") {
+                    if (CNguoiDung.DanhBo != "" && CNguoiDung.MaND != ""&&_image!=null) {
                         Bitmap reizeImage = Bitmap.createScaledBitmap(_image, 1024, 1024, false);
                         String imgString = Base64.encodeToString(getBytesFromBitmap(reizeImage), Base64.NO_WRAP);
 
@@ -74,6 +74,9 @@ public class ChupHinhDocSoActivity extends Fragment {
                             String result = (String) _task.execute(new String[]{"ThemHinhDHN", CNguoiDung.DanhBo, CNguoiDung.MaND, imgString, String.valueOf(CContanstVariable.Latitude), String.valueOf(CContanstVariable.Longitude)}).get();
                             Toast.makeText(getActivity(), result, Toast.LENGTH_SHORT).show();
 
+                            Clear();
+                            ImageView imageView = (ImageView) _rootView.findViewById(R.id.imageView);
+                            imageView.setImageDrawable(null);
                     }
                 } catch (Exception ex) {
                     Toast.makeText(getActivity(), ex.toString(), Toast.LENGTH_SHORT).show();
@@ -100,6 +103,12 @@ public class ChupHinhDocSoActivity extends Fragment {
         }
     }
 
+    public void Clear()
+    {
+        _imageFileName="";
+        _image=null;
+    }
+
     public Uri setImageUri() {
         Uri uri;
         File photoFile = createFile();
@@ -119,7 +128,7 @@ public class ChupHinhDocSoActivity extends Fragment {
         return uri;
     }
 
-    private File createFile() {
+    public File createFile() {
         File filesDir = getActivity().getExternalFilesDir(Environment.DIRECTORY_PICTURES);
         File file = null;
         try {
@@ -138,7 +147,7 @@ public class ChupHinhDocSoActivity extends Fragment {
         return stream.toByteArray();
     }
 
-    private Bitmap imageOreintationValidator(Bitmap bitmap, String path) {
+    public Bitmap imageOreintationValidator(Bitmap bitmap, String path) {
 
         ExifInterface ei;
         try {
@@ -163,7 +172,7 @@ public class ChupHinhDocSoActivity extends Fragment {
         return bitmap;
     }
 
-    private Bitmap rotateImage(Bitmap source, float angle) {
+    public Bitmap rotateImage(Bitmap source, float angle) {
 
         Bitmap bitmap = null;
         Matrix matrix = new Matrix();

@@ -39,7 +39,7 @@
                         android:id="@+id/txtDanhBo"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:ems="10"
+                        android:layout_weight="1"
                         android:inputType="text"
                         tools:text="DanhBo" />
 
@@ -47,7 +47,7 @@
                         android:id="@+id/txtMLT"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:ems="10"
+                        android:layout_weight="1"
                         android:inputType="text"
                         tools:text="MLT" />
                 </TableRow>
@@ -481,11 +481,12 @@
                                 android:layout_weight="1"
                                 android:ems="10"
                                 android:inputType="text"
-                                tools:text="TieuThu"
-                                android:clickable="false"
-                                android:cursorVisible="false"
-                                android:focusable="false"
-                                android:focusableInTouchMode="false"/>
+                                tools:text="TieuThu"/>
+                                <!--android:clickable="false"-->
+                                <!--android:cursorVisible="false"-->
+                                <!--android:focusable="false"-->
+                                <!--android:focusableInTouchMode="false"-->
+
                         </LinearLayout>
                     </LinearLayout>
                 </TableRow>
@@ -534,11 +535,11 @@
                                 android:text="In" />
 
                             <Button
-                                android:id="@+id/btnCapNhat"
+                                android:id="@+id/btnLuu"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
-                                android:text="Cập Nhật" />
+                                android:text="Lưu" />
 
                         </LinearLayout>
 
