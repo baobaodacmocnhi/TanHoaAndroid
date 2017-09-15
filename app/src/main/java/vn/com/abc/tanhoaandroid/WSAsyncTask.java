@@ -15,20 +15,25 @@ import org.ksoap2.transport.HttpTransportSE;
  * Created by user on 07/09/2017.
  */
 
-public class WSAsyncTask extends AsyncTask<String,Void,Object> {
+public class WSAsyncTask extends AsyncTask<String, Void, Object> {
 
     public interface AsyncResponse {
-        void processFinish(SoapObject output);
+        void processFinish(Object output);
     }
 
     public AsyncResponse _delegate = null;
 
     private Context _context;
     private ProgressDialog _dialog;
-private CWebService _ws=new CWebService();
+    private CWebService _ws = new CWebService();
+
+    public WSAsyncTask(Context context,AsyncResponse delegate) {
+        _context = context;
+        _delegate=delegate;
+    }
 
     public WSAsyncTask(Context context) {
-        _context=context;
+        _context = context;
     }
 
     @Override
@@ -46,24 +51,24 @@ private CWebService _ws=new CWebService();
     @Override
     protected Object doInBackground(String... params) {
 
-            switch (params[0]) {
-                case "DangNhap":
-                    return _ws.DangNhap(params[1], params[2]);
-                case "GetDSDocSo":
-                    return _ws.GetDSDocSo(params[1], params[2], params[3], params[4]);
-                case "GetDSCode":
-                    return _ws.GetDSCode();
-                case "TinhTieuThu":
-                    return _ws.TinhTieuThu(params[1], params[2], params[3], params[4],params[5]);
-                case "TinhTienNuoc":
-                    return _ws.TinhTienNuoc(params[1], params[2], params[3], params[4]);
-                case "CapNhat":
-                    return _ws.CapNhat(params[1], params[2], params[3], params[4],params[5], params[6],params[7],params[8],params[9],params[10],params[11]);
-                case "ThemHinhDHN":
-                    return _ws.ThemHinhDHN(params[1], params[2], params[3], params[4],params[5]);
+        switch (params[0]) {
+            case "DangNhap":
+                return _ws.DangNhap(params[1], params[2]);
+            case "GetDSDocSo":
+                return _ws.GetDSDocSo(params[1], params[2], params[3], params[4]);
+            case "GetDSCode":
+                return _ws.GetDSCode();
+            case "TinhTieuThu":
+                return _ws.TinhTieuThu(params[1], params[2], params[3], params[4], params[5]);
+            case "TinhTienNuoc":
+                return _ws.TinhTienNuoc(params[1], params[2], params[3], params[4]);
+            case "CapNhat":
+                return _ws.CapNhat(params[1], params[2], params[3], params[4], params[5], params[6], params[7], params[8], params[9], params[10], params[11]);
+            case "ThemHinhDHN":
+                return _ws.ThemHinhDHN(params[1], params[2], params[3], params[4], params[5]);
 
-            };
-
+        }
+        ;
 
         return null;
     }
@@ -74,12 +79,12 @@ private CWebService _ws=new CWebService();
     }
 
     @Override
-    protected void onPostExecute(Object soapObject) {
+    protected void onPostExecute(Object object) {
         if (_dialog.isShowing()) {
             _dialog.dismiss();
         }
-//        _delegate.processFinish(soapObject);
-        super.onPostExecute(soapObject);
+//        _delegate.processFinish(object);
+        super.onPostExecute(object);
 
     }
 

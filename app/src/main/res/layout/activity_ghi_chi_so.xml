@@ -1,20 +1,16 @@
-<?xml version="1.0" encoding="utf-8"?>
-    <!--android.support.constraint.ConstraintLayout-->
-<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<?xml version="1.0" encoding="utf-8"?><!--android.support.constraint.ConstraintLayout-->
+<android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:id="@+id/ghichisolayout"
-    tools:context="vn.com.abc.tanhoaandroid.GhiChiSoActivity"
-    >
+    android:layout_height="match_parent">
 
-    <ScrollView
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        tools:layout_editor_absoluteY="8dp"
-        tools:layout_editor_absoluteX="8dp"
-        >
+    <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/ghichisolayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context="vn.com.abc.tanhoaandroid.GhiChiSoActivity">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -160,8 +156,9 @@
                                 <EditText
                                     android:id="@+id/txtVT"
                                     android:layout_width="35dp"
-                                    android:layout_height="wrap_content"
+                                    android:layout_height="43dp"
                                     android:layout_weight="1"
+                                    android:background="@android:color/holo_blue_bright"
                                     android:inputType="text"
                                     tools:text="VT" />
 
@@ -182,8 +179,9 @@
                                 <EditText
                                     android:id="@+id/txtCo"
                                     android:layout_width="35dp"
-                                    android:layout_height="wrap_content"
+                                    android:layout_height="43dp"
                                     android:layout_weight="1"
+                                    android:background="@android:color/holo_blue_bright"
                                     android:inputType="text"
                                     tools:text="Co" />
 
@@ -204,8 +202,9 @@
                                 <EditText
                                     android:id="@+id/txtTongTien"
                                     android:layout_width="120dp"
-                                    android:layout_height="wrap_content"
+                                    android:layout_height="43dp"
                                     android:layout_weight="1"
+                                    android:background="@android:color/holo_green_light"
                                     android:inputType="text"
                                     tools:text="TongTien" />
 
@@ -242,15 +241,16 @@
 
                             <TextView
                                 android:id="@+id/textView3"
-                                android:layout_width="20dp"
+                                android:layout_width="30dp"
                                 android:layout_height="wrap_content"
                                 android:text="ST" />
 
                             <EditText
                                 android:id="@+id/txtSoThan"
                                 android:layout_width="180dp"
-                                android:layout_height="wrap_content"
+                                android:layout_height="43dp"
                                 android:layout_weight="1"
+                                android:background="@android:color/holo_blue_bright"
                                 android:inputType="text"
                                 tools:text="SoThan" />
 
@@ -270,8 +270,9 @@
                             <EditText
                                 android:id="@+id/txtHieu"
                                 android:layout_width="30dp"
-                                android:layout_height="wrap_content"
+                                android:layout_height="43dp"
                                 android:layout_weight="1"
+                                android:background="@android:color/holo_blue_bright"
                                 android:inputType="text"
                                 tools:text="Hieu" />
 
@@ -284,8 +285,9 @@
                             <EditText
                                 android:id="@+id/txtCT"
                                 android:layout_width="40dp"
-                                android:layout_height="wrap_content"
+                                android:layout_height="43dp"
                                 android:layout_weight="1"
+                                android:background="@android:color/holo_blue_bright"
                                 android:inputType="text"
                                 tools:text="CT" />
                         </LinearLayout>
@@ -311,15 +313,16 @@
 
                             <TextView
                                 android:id="@+id/textView7"
-                                android:layout_width="20dp"
+                                android:layout_width="30dp"
                                 android:layout_height="wrap_content"
                                 android:text="CC" />
 
                             <EditText
                                 android:id="@+id/txtCC"
                                 android:layout_width="40dp"
-                                android:layout_height="wrap_content"
+                                android:layout_height="43dp"
                                 android:layout_weight="1"
+                                android:background="@android:color/holo_blue_bright"
                                 android:inputType="text"
                                 tools:text="CC" />
                         </LinearLayout>
@@ -336,104 +339,113 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:orientation="vertical">
+                        android:orientation="horizontal">
 
                         <LinearLayout
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:orientation="horizontal">
+                            android:orientation="vertical">
 
                             <EditText
                                 android:id="@+id/txtCode3"
                                 android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
+                                android:layout_height="43dp"
                                 android:layout_weight="1"
+                                android:background="@android:color/holo_orange_dark"
                                 android:ems="3"
                                 android:inputType="text"
                                 tools:text="Code3" />
 
                             <EditText
-                                android:id="@+id/txtCode2"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:ems="3"
-                                android:inputType="text"
-                                tools:text="Code2" />
-
-                            <EditText
-                                android:id="@+id/txtCode1"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:ems="3"
-                                android:inputType="text"
-                                tools:text="Code1" />
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:orientation="horizontal">
-
-                            <EditText
                                 android:id="@+id/txtChiSo3"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
+                                android:layout_width="match_parent"
+                                android:layout_height="43dp"
                                 android:layout_weight="1"
+                                android:background="@android:color/holo_orange_dark"
                                 android:ems="3"
                                 android:inputType="text"
                                 tools:text="ChiSo3" />
 
                             <EditText
-                                android:id="@+id/txtChiSo2"
+                                android:id="@+id/txtTieuThu3"
                                 android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:ems="3"
-                                android:inputType="text"
-                                tools:text="ChiSo2" />
-
-                            <EditText
-                                android:id="@+id/txtChiSo1"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
+                                android:layout_height="43dp"
                                 android:layout_weight="1"
+                                android:background="@android:color/holo_orange_dark"
                                 android:ems="3"
                                 android:inputType="text"
-                                tools:text="ChiSo1" />
+                                tools:text="TieuThu3" />
+
                         </LinearLayout>
 
                         <LinearLayout
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:orientation="horizontal">
+                            android:orientation="vertical">
 
                             <EditText
-                                android:id="@+id/txtTieuThu3"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
+                                android:id="@+id/txtCode2"
+                                android:layout_width="match_parent"
+                                android:layout_height="43dp"
                                 android:layout_weight="1"
+                                android:background="@android:color/holo_orange_light"
                                 android:ems="3"
                                 android:inputType="text"
-                                tools:text="TieuThu3" />
+                                tools:text="Code2" />
+
+                            <EditText
+                                android:id="@+id/txtChiSo2"
+                                android:layout_width="match_parent"
+                                android:layout_height="43dp"
+                                android:background="@android:color/holo_orange_light"
+                                android:ems="3"
+                                android:inputType="text"
+                                tools:text="ChiSo2" />
 
                             <EditText
                                 android:id="@+id/txtTieuThu2"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
+                                android:layout_width="match_parent"
+                                android:layout_height="43dp"
                                 android:layout_weight="1"
+                                android:background="@android:color/holo_orange_light"
                                 android:ems="3"
                                 android:inputType="text"
                                 tools:text="TieuThu2" />
 
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical">
+
+                            <EditText
+                                android:id="@+id/txtCode1"
+                                android:layout_width="match_parent"
+                                android:layout_height="43dp"
+                                android:layout_weight="1"
+                                android:ems="3"
+                                android:inputType="text"
+                                tools:text="Code1" />
+
+                            <EditText
+                                android:id="@+id/txtChiSo1"
+                                android:layout_width="match_parent"
+                                android:layout_height="43dp"
+                                android:layout_weight="1"
+                                android:ems="3"
+                                android:inputType="text"
+                                tools:text="ChiSo1" />
+
                             <EditText
                                 android:id="@+id/txtTieuThu1"
                                 android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
+                                android:layout_height="43dp"
                                 android:layout_weight="1"
                                 android:ems="3"
                                 android:inputType="text"
                                 tools:text="TieuThu1" />
+
                         </LinearLayout>
                     </LinearLayout>
 
@@ -462,11 +474,18 @@
                             <EditText
                                 android:id="@+id/txtChiSo"
                                 android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
+                                android:layout_height="43dp"
                                 android:layout_weight="1"
-                                android:ems="10"
+                                android:background="@android:color/holo_green_light"
+                                android:ems="5"
                                 android:inputType="number"
                                 tools:text="ChiSo" />
+
+                            <Button
+                                android:id="@+id/btnLuu"
+                                android:layout_width="wrap_content"
+                                android:layout_height="43dp"
+                                android:text="Lưu" />
                         </LinearLayout>
 
                         <LinearLayout
@@ -477,15 +496,16 @@
                             <EditText
                                 android:id="@+id/txtTieuThu"
                                 android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
+                                android:layout_height="43dp"
                                 android:layout_weight="1"
+                                android:background="@android:color/holo_green_light"
+                                android:clickable="false"
+                                android:cursorVisible="false"
                                 android:ems="10"
+                                android:focusable="false"
+                                android:focusableInTouchMode="false"
                                 android:inputType="text"
-                                tools:text="TieuThu"/>
-                                <!--android:clickable="false"-->
-                                <!--android:cursorVisible="false"-->
-                                <!--android:focusable="false"-->
-                                <!--android:focusableInTouchMode="false"-->
+                                tools:text="TieuThu" />
 
                         </LinearLayout>
                     </LinearLayout>
@@ -534,13 +554,6 @@
                                 android:layout_weight="1"
                                 android:text="In" />
 
-                            <Button
-                                android:id="@+id/btnLuu"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:text="Lưu" />
-
                         </LinearLayout>
 
                     </LinearLayout>
@@ -549,6 +562,7 @@
 
             </TableLayout>
         </LinearLayout>
-    </ScrollView>
 
-</android.support.design.widget.CoordinatorLayout>
+
+    </android.support.design.widget.CoordinatorLayout>
+</android.support.v4.widget.NestedScrollView>

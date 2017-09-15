@@ -75,8 +75,8 @@ public class DanhSachDocSoActivity extends Fragment {
                         lstViewAdapter adapter = new lstViewAdapter(getActivity(), list);
                         lstView.setAdapter(adapter);
 
-                        TextView txtTongDB=(TextView)rootView.findViewById(R.id.txtTongDB);
-                        txtTongDB.setText("Tổng: "+CNguoiDung.tbDocSoFilter.getPropertyCount()+" DB");
+                        TextView txtTongDB = (TextView) rootView.findViewById(R.id.txtTongDB);
+                        txtTongDB.setText("Tổng: " + CNguoiDung.tbDocSoFilter.getPropertyCount() + " DB");
                     }
                 } catch (Exception ex) {
                     Toast.makeText(getActivity(), ex.toString(), Toast.LENGTH_SHORT).show();
@@ -119,38 +119,34 @@ public class DanhSachDocSoActivity extends Fragment {
     private void DanhSachDocSoFilter(String Code) {
         try {
             CNguoiDung.tbDocSoFilter = new SoapObject("DocSo", "tbDocSoFilter");
-            if (Code == "0")
-            {
-                CNguoiDung.tbDocSoFilter=CNguoiDung.tbDocSo;
-            }
-            else if (Code == "1") {
+            if (Code == "0") {
+                CNguoiDung.tbDocSoFilter = CNguoiDung.tbDocSo;
+            } else if (Code == "1") {
                 for (int i = 0; i < CNguoiDung.tbDocSo.getPropertyCount(); i++) {
                     SoapObject obj = (SoapObject) CNguoiDung.tbDocSo.getProperty(i);
                     if (obj.getProperty("CodeMoi").toString().replace("anyType{}", "").matches("") == true) {
-                        SoapObject temp=new SoapObject("temp","");
-                        PropertyInfo propertyInfoP=new PropertyInfo();
+                        SoapObject temp = new SoapObject("Temp", "");
+                        PropertyInfo propertyInfoP = new PropertyInfo();
                         for (int j = 0; j < obj.getPropertyCount(); j++) {
                             PropertyInfo propertyInfo = new PropertyInfo();
                             obj.getPropertyInfo(j, propertyInfo);
-                            temp.addProperty(propertyInfo.getName(), obj.getProperty(j));
+                            temp.addProperty(propertyInfo.getName(), obj.getProperty(j).toString().replace("anyType{}", ""));
                         }
                         propertyInfoP.setName("Table");
                         propertyInfoP.setValue(temp);
                         CNguoiDung.tbDocSoFilter.addProperty(propertyInfoP);
                     }
                 }
-            }
-            else
-            {
+            } else {
                 for (int i = 0; i < CNguoiDung.tbDocSo.getPropertyCount(); i++) {
                     SoapObject obj = (SoapObject) CNguoiDung.tbDocSo.getProperty(i);
                     if (obj.getProperty("CodeMoi").toString().matches(Code) == true) {
-                        SoapObject temp=new SoapObject("temp","");
-                        PropertyInfo propertyInfoP=new PropertyInfo();
+                        SoapObject temp = new SoapObject("Temp", "");
+                        PropertyInfo propertyInfoP = new PropertyInfo();
                         for (int j = 0; j < obj.getPropertyCount(); j++) {
                             PropertyInfo propertyInfo = new PropertyInfo();
                             obj.getPropertyInfo(j, propertyInfo);
-                            temp.addProperty(propertyInfo.getName(), obj.getProperty(j));
+                            temp.addProperty(propertyInfo.getName(), obj.getProperty(j).toString().replace("anyType{}", ""));
                         }
                         propertyInfoP.setName("Table");
                         propertyInfoP.setValue(temp);

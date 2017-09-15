@@ -20,8 +20,9 @@ import java.util.HashMap;
 
 public class DangNhapActivity extends AppCompatActivity {
 
-//    CWebService ws = new CWebService();
-private WSAsyncTask task;
+    //    CWebService ws = new CWebService();
+    private WSAsyncTask task;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -54,20 +55,20 @@ private WSAsyncTask task;
                         return;
                     }
 
-                    task=new WSAsyncTask(DangNhapActivity.this);
-                    SoapObject tbNguoiDung=  (SoapObject) task.execute(new String[]{"DangNhap", txtTaiKhoan.getText().toString(), txtMatKhau.getText().toString()}).get();
+                    task = new WSAsyncTask(DangNhapActivity.this);
+                    SoapObject tbNguoiDung = (SoapObject) task.execute(new String[]{"DangNhap", txtTaiKhoan.getText().toString(), txtMatKhau.getText().toString()}).get();
                     if (tbNguoiDung != null) {
                         SoapObject nguoidung = (SoapObject) tbNguoiDung.getProperty(0);
                         CNguoiDung.MaND = nguoidung.getProperty("MaND").toString();
                         CNguoiDung.HoTen = nguoidung.getProperty("HoTen").toString();
                         CNguoiDung.May = nguoidung.getProperty("May").toString();
-                        task=new WSAsyncTask(DangNhapActivity.this);
-                        CNguoiDung.tbDocSo = (SoapObject)task.execute(new String[]{"GetDSDocSo", cmbNam.getSelectedItem().toString(), cmbKy.getSelectedItem().toString(), cmbDot.getSelectedItem().toString(), CNguoiDung.May}).get();
-                        task=new WSAsyncTask(DangNhapActivity.this);
-                        SoapObject tbCode =(SoapObject)task.execute(new String[]{"GetDSCode"}).get();
+                        task = new WSAsyncTask(DangNhapActivity.this);
+                        CNguoiDung.tbDocSo = (SoapObject) task.execute(new String[]{"GetDSDocSo", cmbNam.getSelectedItem().toString(), cmbKy.getSelectedItem().toString(), cmbDot.getSelectedItem().toString(), CNguoiDung.May}).get();
+                        task = new WSAsyncTask(DangNhapActivity.this);
+                        SoapObject tbCode = (SoapObject) task.execute(new String[]{"GetDSCode"}).get();
                         if (tbCode != null) {
                             CNguoiDung.cmbCodeValue = new HashMap<Integer, String>();
-                            CNguoiDung.cmbCodeDisplay = new String[tbCode.getPropertyCount()+2];
+                            CNguoiDung.cmbCodeDisplay = new String[tbCode.getPropertyCount() + 2];
 
                             CNguoiDung.cmbCodeValue.put(0, "0");
                             CNguoiDung.cmbCodeDisplay[0] = "Tất Cả";
@@ -77,13 +78,13 @@ private WSAsyncTask task;
 
                             for (int i = 0; i < tbCode.getPropertyCount(); i++) {
                                 SoapObject obj = (SoapObject) tbCode.getProperty(i);
-                                CNguoiDung.cmbCodeValue.put(i+2, obj.getProperty("CODE").toString());
-                                CNguoiDung.cmbCodeDisplay[i+2] = obj.getProperty("TTDHN").toString();
+                                CNguoiDung.cmbCodeValue.put(i + 2, obj.getProperty("CODE").toString());
+                                CNguoiDung.cmbCodeDisplay[i + 2] = obj.getProperty("TTDHN").toString();
                             }
                         }
 //                        Toast.makeText(DangNhapActivity.this, "Thành công", Toast.LENGTH_SHORT).show();
-                        Intent returnIntent=new Intent();
-                        setResult(Activity.RESULT_OK,returnIntent);
+                        Intent returnIntent = new Intent();
+                        setResult(Activity.RESULT_OK, returnIntent);
                         finish();
                     } else {
                         Toast.makeText(DangNhapActivity.this, "Thất bại", Toast.LENGTH_SHORT).show();

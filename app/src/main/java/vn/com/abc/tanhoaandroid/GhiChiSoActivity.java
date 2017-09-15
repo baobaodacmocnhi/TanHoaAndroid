@@ -1,17 +1,20 @@
 package vn.com.abc.tanhoaandroid;
 
+import android.app.Activity;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import org.ksoap2.serialization.PropertyInfo;
 import org.ksoap2.serialization.SoapObject;
 
 import java.util.Map;
@@ -123,29 +126,62 @@ public class GhiChiSoActivity extends Fragment {
                     if (cmbCode.getSelectedItem().toString().matches("Chưa Ghi") == false && cmbCode.getSelectedItem().toString().matches("Đã Ghi") == false)
                         CodeMoi = CNguoiDung.cmbCodeValue.get(cmbCode.getSelectedItemPosition());
                     if (CodeMoi != "") {
-                            task = new WSAsyncTask(getActivity());
-                            String result = (String) task.execute(new String[]{"CapNhat", _ID,  txtDanhBo.getText().toString().replace(" ", ""),_Nam, _Ky,CodeMoi, cmbCode.getSelectedItem().toString(), txtChiSo.getText().toString(),
-                                    txtGB.getText().toString(),txtDM.getText().toString(), String.valueOf(CContanstVariable.Latitude), String.valueOf(CContanstVariable.Longitude)}).get();
+                        task = new WSAsyncTask(getActivity());
+                        String result = (String) task.execute(new String[]{"CapNhat", _ID, txtDanhBo.getText().toString().replace(" ", ""), _Nam, _Ky, CodeMoi, cmbCode.getSelectedItem().toString(), txtChiSo.getText().toString(),
+                                txtGB.getText().toString(), txtDM.getText().toString(), String.valueOf(CContanstVariable.Latitude), String.valueOf(CContanstVariable.Longitude)}).get();
                         String[] temp = result.replace("[", "").replace("]", "").split(",");
                         String Success = temp[0];
                         String TieuThu = temp[1];
                         String TongCong = temp[2];
-                        String StrShow="";
+                        String StrShow = "";
                         txtTieuThu.setText(TieuThu);
                         txtTongTien.setText(TongCong);
                         if (Boolean.parseBoolean(Success) == true) {
                             StrShow = "Thành Công";
-                            ///cập nhật lại SoapObject
-//                            for (int i = 0; i < CNguoiDung.tbDocSoFilter.getPropertyCount(); i++) {
-//                                SoapObject obj = (SoapObject) CNguoiDung.tbDocSoFilter.getProperty(i);
-//                                if (obj.getProperty("DocSoID").toString().matches(_ID) == true) {
-//                                    obj.setProperty("CodeMoi","");
-//                                    break;
-//                                }
-//                            }
-                        }
-                        else
-                            StrShow= "Thất Bại";
+                            ///cập nhật table filter
+                            for (int i = 0; i < CNguoiDung.tbDocSoFilter.getPropertyCount(); i++) {
+                                SoapObject obj = (SoapObject) CNguoiDung.tbDocSoFilter.getProperty(i);
+                                if (obj.getProperty("DocSoID").toString().matches(_ID) == true) {
+                                    SoapObject tempSoap = new SoapObject("Temp", "");
+                                    for (int j = 0; j < obj.getPropertyCount(); j++) {
+                                        PropertyInfo propertyInfoChild = new PropertyInfo();
+                                        obj.getPropertyInfo(j, propertyInfoChild);
+                                        switch (propertyInfoChild.getName()) {
+                                            case "CSMoi":
+                                                propertyInfoChild.setValue(Integer.parseInt(txtChiSo.getText().toString()));
+                                                break;
+                                            case "CodeMoi":
+                                                propertyInfoChild.setValue(CodeMoi);
+                                                break;
+                                            case "TTDHNMoi":
+                                                propertyInfoChild.setValue(cmbCode.getSelectedItem().toString());
+                                                break;
+                                            case "TieuThuMoi":
+                                                propertyInfoChild.setValue(TieuThu);
+                                                break;
+                                            case "TongTien":
+                                                propertyInfoChild.setValue(TongCong);
+                                                break;
+                                        }
+                                        tempSoap.addProperty(propertyInfoChild.getName(), propertyInfoChild.getValue());
+                                    }
+                                    CNguoiDung.tbDocSoFilter.setProperty(i, tempSoap);
+                                    ///cập nhật table chính
+                                    for (int k = 0; k < CNguoiDung.tbDocSo.getPropertyCount(); k++) {
+                                        SoapObject obj2 = (SoapObject) CNguoiDung.tbDocSo.getProperty(k);
+                                        if (obj2.getProperty("DocSoID").toString().matches(_ID) == true) {
+                                            CNguoiDung.tbDocSo.setProperty(k, tempSoap);
+                                            break;
+                                        }
+                                    }
+                                    break;
+                                }
+                            }
+                            ///hide keyboard
+                            InputMethodManager inputMethodManager =(InputMethodManager) getActivity().getSystemService(Activity.INPUT_METHOD_SERVICE);
+                            inputMethodManager.hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(), 0);
+                        } else
+                            StrShow = "Thất Bại";
                         Toast.makeText(getActivity(), StrShow, Toast.LENGTH_SHORT).show();
                     } else {
                         Toast.makeText(getContext(), "Chưa chọn Code", Toast.LENGTH_SHORT).show();
@@ -247,7 +283,10 @@ public class GhiChiSoActivity extends Fragment {
             MLT = new StringBuilder(MLT).insert(MLT.length() - 5, " ").toString();
             txtMLT.setText(MLT);
 
-            txtHoTen.setText(obj.getProperty("HoTen").toString());
+            try {
+                txtHoTen.setText(obj.getProperty("HoTen").toString());
+            }catch (Exception ex){}
+
             txtDiaChi.setText(obj.getProperty("SoNhaCu").toString() + " " + obj.getProperty("Duong").toString());
             txtGB.setText(obj.getProperty("GB").toString());
             txtDienThoai.setText(obj.getProperty("SDT").toString());
@@ -258,7 +297,7 @@ public class GhiChiSoActivity extends Fragment {
             txtCT.setText(obj.getProperty("ChiThanCu").toString());
             txtTongTien.setText(obj.getProperty("TongTien").toString());
 //            txtTT.setText(obj.getProperty("").toString());
-//            txtCC.setText(obj.getP♥roperty("ChiCoCu").toString());
+//            txtCC.setText(obj.getProperty("ChiCoCu").toString());
 //            Integer TT = 0;//tiêu thụ
 //            Integer TB = 0;//trung bình cộng
             try {
@@ -309,5 +348,7 @@ public class GhiChiSoActivity extends Fragment {
             Toast.makeText(getActivity(), ex.toString(), Toast.LENGTH_SHORT).show();
         }
     }
+
+
 
 }
