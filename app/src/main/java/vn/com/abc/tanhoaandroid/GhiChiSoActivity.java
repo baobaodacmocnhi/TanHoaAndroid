@@ -118,8 +118,8 @@ public class GhiChiSoActivity extends Fragment {
                     cmbCode = (Spinner) _rootView.findViewById(R.id.cmbCode);
                     EditText txtChiSo = (EditText) _rootView.findViewById(R.id.txtChiSo);
                     EditText txtTieuThu = (EditText) _rootView.findViewById(R.id.txtTieuThu);
-                    EditText txtGB = (EditText) _rootView.findViewById(R.id.txtGB);
-                    EditText txtDM = (EditText) _rootView.findViewById(R.id.txtDM);
+                    EditText txtGiaBieu = (EditText) _rootView.findViewById(R.id.txtGiaBieu);
+                    EditText txtDinhMuc = (EditText) _rootView.findViewById(R.id.txtDinhMuc);
                     EditText txtTongTien = (EditText) _rootView.findViewById(R.id.txtTongTien);
 
                     String CodeMoi = "";
@@ -128,7 +128,7 @@ public class GhiChiSoActivity extends Fragment {
                     if (CodeMoi != "") {
                         task = new WSAsyncTask(getActivity());
                         String result = (String) task.execute(new String[]{"CapNhat", _ID, txtDanhBo.getText().toString().replace(" ", ""), _Nam, _Ky, CodeMoi, cmbCode.getSelectedItem().toString(), txtChiSo.getText().toString(),
-                                txtGB.getText().toString(), txtDM.getText().toString(), String.valueOf(CContanstVariable.Latitude), String.valueOf(CContanstVariable.Longitude)}).get();
+                                txtGiaBieu.getText().toString(), txtDinhMuc.getText().toString(), String.valueOf(CContanstVariable.Latitude), String.valueOf(CContanstVariable.Longitude)}).get();
                         String[] temp = result.replace("[", "").replace("]", "").split(",");
                         String Success = temp[0];
                         String TieuThu = temp[1];
