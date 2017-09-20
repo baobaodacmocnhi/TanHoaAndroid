@@ -31,7 +31,7 @@ public class GhiChiSoActivity extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
-        _rootView = inflater.inflate(R.layout.activity_ghi_chi_so, container, false);
+        _rootView = inflater.inflate(R.layout.activity_ghi_chi_so2, container, false);
 
         try {
             Bundle bundle = getArguments();
@@ -246,11 +246,11 @@ public class GhiChiSoActivity extends Fragment {
             EditText txtMLT = (EditText) _rootView.findViewById(R.id.txtMLT);
             EditText txtHoTen = (EditText) _rootView.findViewById(R.id.txtHoTen);
             EditText txtDiaChi = (EditText) _rootView.findViewById(R.id.txtDiaChi);
-            EditText txtGB = (EditText) _rootView.findViewById(R.id.txtGB);
+            EditText txtGiaBieu = (EditText) _rootView.findViewById(R.id.txtGiaBieu);
             EditText txtDienThoai = (EditText) _rootView.findViewById(R.id.txtDienThoai);
             EditText txtSoThan = (EditText) _rootView.findViewById(R.id.txtSoThan);
-            EditText txtDM = (EditText) _rootView.findViewById(R.id.txtDM);
-            EditText txtVT = (EditText) _rootView.findViewById(R.id.txtVT);
+            EditText txtDinhMuc = (EditText) _rootView.findViewById(R.id.txtDinhMuc);
+            EditText txtViTri = (EditText) _rootView.findViewById(R.id.txtViTri);
             EditText txtCo = (EditText) _rootView.findViewById(R.id.txtCo);
             EditText txtHieu = (EditText) _rootView.findViewById(R.id.txtHieu);
             EditText txtCT = (EditText) _rootView.findViewById(R.id.txtCT);
@@ -288,11 +288,11 @@ public class GhiChiSoActivity extends Fragment {
             }catch (Exception ex){}
 
             txtDiaChi.setText(obj.getProperty("SoNhaCu").toString() + " " + obj.getProperty("Duong").toString());
-            txtGB.setText(obj.getProperty("GB").toString());
+            txtGiaBieu.setText(obj.getProperty("GB").toString());
             txtDienThoai.setText(obj.getProperty("SDT").toString());
             txtSoThan.setText(obj.getProperty("SoThanCu").toString());
-            txtDM.setText(obj.getProperty("DM").toString());
-            txtVT.setText(obj.getProperty("ViTriCu").toString());
+            txtDinhMuc.setText(obj.getProperty("DM").toString());
+            txtViTri.setText(obj.getProperty("ViTriCu").toString());
             txtHieu.setText(obj.getProperty("HieuCu").toString());
             txtCT.setText(obj.getProperty("ChiThanCu").toString());
             txtTongTien.setText(obj.getProperty("TongTien").toString());

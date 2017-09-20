@@ -97,7 +97,7 @@
                                 android:text="GB" />
 
                             <EditText
-                                android:id="@+id/txtGB"
+                                android:id="@+id/txtGiaBieu"
                                 android:layout_width="50dp"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
@@ -132,7 +132,7 @@
                                     android:text="ĐM" />
 
                                 <EditText
-                                    android:id="@+id/txtDM"
+                                    android:id="@+id/txtDinhMuc"
                                     android:layout_width="60dp"
                                     android:layout_height="wrap_content"
                                     android:layout_weight="1"
@@ -154,7 +154,7 @@
                                     android:text="VT" />
 
                                 <EditText
-                                    android:id="@+id/txtVT"
+                                    android:id="@+id/txtViTri"
                                     android:layout_width="35dp"
                                     android:layout_height="43dp"
                                     android:layout_weight="1"
