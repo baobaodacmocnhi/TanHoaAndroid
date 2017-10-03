@@ -100,7 +100,7 @@ public class DanhSachDocSoActivity extends Fragment {
 
                     FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
                     FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                    fragmentTransaction.replace(R.id.ghichisolayout2, ghichiso);
+                    fragmentTransaction.replace(R.id.ghichisolayout, ghichiso);
                     fragmentTransaction.commit();
 
                     TabLayout tabhost = (TabLayout) getActivity().findViewById(R.id.tabs);

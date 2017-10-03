@@ -25,13 +25,13 @@ public class GhiChiSoActivity extends Fragment {
     private Integer _index = 0;
     private String _ID, _Nam, _Ky, _GiaBan, _PhiBVMT, _ThueGTGT, _TongCong, _ChiTiet = "";
     private Spinner cmbCode;
-    private WSAsyncTask task;
+    private AsyncTaskWS task;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
-        _rootView = inflater.inflate(R.layout.activity_ghi_chi_so2, container, false);
+        _rootView = inflater.inflate(R.layout.activity_ghi_chi_so, container, false);
 
         try {
             Bundle bundle = getArguments();
@@ -85,9 +85,9 @@ public class GhiChiSoActivity extends Fragment {
 //                    if (cmbCode.getSelectedItem().toString().matches("Chưa Ghi") == false && cmbCode.getSelectedItem().toString().matches("Đã Ghi") == false)
 //                        CodeMoi = CNguoiDung.cmbCodeValue.get(cmbCode.getSelectedItemPosition());
 //                    if (CodeMoi != "") {
-//                        task = new WSAsyncTask(getActivity());
+//                        task = new AsyncTaskWS(getActivity());
 //                        String TieuThu = (String) task.execute(new String[]{"TinhTieuThu", txtDanhBo.getText().toString().replace(" ", ""), _Nam, _Ky, CodeMoi, txtChiSo.getText().toString()}).get();
-//                        task = new WSAsyncTask(getActivity());
+//                        task = new AsyncTaskWS(getActivity());
 //                        String resultTienNuoc = (String) task.execute(new String[]{"TinhTienNuoc", txtDanhBo.getText().toString().replace(" ", ""), txtGB.getText().toString(), txtDM.getText().toString(), TieuThu}).get();
 //
 //                        String[] temp = resultTienNuoc.replace("[", "").replace("]", "").split(",");
@@ -126,7 +126,7 @@ public class GhiChiSoActivity extends Fragment {
                     if (cmbCode.getSelectedItem().toString().matches("Chưa Ghi") == false && cmbCode.getSelectedItem().toString().matches("Đã Ghi") == false)
                         CodeMoi = CNguoiDung.cmbCodeValue.get(cmbCode.getSelectedItemPosition());
                     if (CodeMoi != "") {
-                        task = new WSAsyncTask(getActivity());
+                        task = new AsyncTaskWS(getActivity());
                         String result = (String) task.execute(new String[]{"CapNhat", _ID, txtDanhBo.getText().toString().replace(" ", ""), _Nam, _Ky, CodeMoi, cmbCode.getSelectedItem().toString(), txtChiSo.getText().toString(),
                                 txtGiaBieu.getText().toString(), txtDinhMuc.getText().toString(), String.valueOf(CContanstVariable.Latitude), String.valueOf(CContanstVariable.Longitude)}).get();
                         String[] temp = result.replace("[", "").replace("]", "").split(",");

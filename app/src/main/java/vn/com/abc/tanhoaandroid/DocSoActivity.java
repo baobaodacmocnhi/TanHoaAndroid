@@ -1,8 +1,7 @@
 package vn.com.abc.tanhoaandroid;
 
-import android.Manifest;
+import android.content.Intent;
 import android.support.design.widget.TabLayout;
-import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 
@@ -57,6 +56,12 @@ public class DocSoActivity extends AppCompatActivity{
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(mViewPager);
 
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        stopService(new Intent(DocSoActivity.this, GPSService.class));
     }
 
     /**

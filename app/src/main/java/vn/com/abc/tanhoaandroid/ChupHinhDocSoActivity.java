@@ -34,7 +34,7 @@ public class ChupHinhDocSoActivity extends Fragment {
 
     private String _imageFileName="";
     private Bitmap _image=null;
-    private WSAsyncTask _task;
+    private AsyncTaskWS _task;
 
     @Nullable
     @Override
@@ -70,7 +70,7 @@ public class ChupHinhDocSoActivity extends Fragment {
                         Bitmap reizeImage = Bitmap.createScaledBitmap(_image, 1024, 1024, false);
                         String imgString = Base64.encodeToString(getBytesFromBitmap(reizeImage), Base64.NO_WRAP);
 
-                            _task = new WSAsyncTask(getActivity());
+                            _task = new AsyncTaskWS(getActivity());
                             String result = (String) _task.execute(new String[]{"ThemHinhDHN", CNguoiDung.DanhBo, CNguoiDung.MaND, imgString, String.valueOf(CContanstVariable.Latitude), String.valueOf(CContanstVariable.Longitude)}).get();
                             Toast.makeText(getActivity(), result, Toast.LENGTH_SHORT).show();
 

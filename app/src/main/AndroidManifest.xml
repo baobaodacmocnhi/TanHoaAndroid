@@ -46,6 +46,10 @@
             android:name=".GPSTracker"
             android:enabled="true"
             android:exported="true" />
+        <service
+            android:name=".GPSService"
+            android:enabled="true"
+            android:exported="true"></service>
     </application>
 
 </manifest>

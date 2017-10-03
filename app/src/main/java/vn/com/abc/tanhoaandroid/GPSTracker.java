@@ -58,7 +58,7 @@ public class GPSTracker extends Service implements LocationListener {
 
                 if (isNetworkEnabled) {
 
-                    locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, CContanstVariable.MIN_TIME_BW_UPDATES, CContanstVariable.MIN_DISTANCE_CHANGE_FOR_UPDATES, this);
+                    locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, CContanstVariable.MIN_TIME_FOR_UPDATES, CContanstVariable.MIN_DISTANCE_CHANGE_FOR_UPDATES, this);
                     //    Log.d("Network", "Network");
                     if (locationManager != null) {
                         location = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
@@ -73,7 +73,7 @@ public class GPSTracker extends Service implements LocationListener {
 
                 if (isGPSEnabled) {
                     if (location == null) {
-                        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, CContanstVariable.MIN_TIME_BW_UPDATES, CContanstVariable.MIN_DISTANCE_CHANGE_FOR_UPDATES, this);
+                        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, CContanstVariable.MIN_TIME_FOR_UPDATES, CContanstVariable.MIN_DISTANCE_CHANGE_FOR_UPDATES, this);
 //                        Log.d("GPS Enabled", "GPS Enabled");
                         if (locationManager != null) {
                             location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
@@ -163,8 +163,8 @@ public class GPSTracker extends Service implements LocationListener {
 
     @Override
     public int onStartCommand(Intent intent,  int flags, int startId) {
-        getLocation();
-        return super.onStartCommand(intent, flags, startId);
+         super.onStartCommand(intent, flags, startId);
+        return START_STICKY;
     }
 
     @Override
