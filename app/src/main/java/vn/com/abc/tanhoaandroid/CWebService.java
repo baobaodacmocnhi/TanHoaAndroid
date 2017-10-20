@@ -17,6 +17,12 @@ public class CWebService {
     private final String WSDL_TARGET_NAMESPACE = "http://tempuri.org/";
     private final String SOAP_ADDRESS = "http://113.161.88.180:1989/service.asmx";
 
+//    DownloadManager downloadManager=(DownloadManager)getSystemService(Context.DOWNLOAD_SERVICE);
+    //                    Uri uri=Uri.parse("113.161.88.180:1989/app/tanhoa.apk");
+//                    DownloadManager.Request request=new DownloadManager.Request(uri);
+//                    request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
+//                    Long reference=downloadManager.enqueue(request);
+
     public CWebService() {
     }
 
@@ -83,6 +89,14 @@ public class CWebService {
             return null;
         }
 
+    }
+
+    public String GetCurrentVersion() {
+        String SOAP_ACTION = "http://tempuri.org/DS_GetCurrentVersion";
+        String OPERATION_NAME = "DS_GetCurrentVersion";
+        SoapObject request = new SoapObject(WSDL_TARGET_NAMESPACE, OPERATION_NAME);
+
+        return ExcuteReturnValue(request, SOAP_ACTION);
     }
 
     public String CheckDangNhap(String TaiKhoan, String MatKhau) {

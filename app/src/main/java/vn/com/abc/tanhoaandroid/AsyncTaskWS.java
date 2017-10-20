@@ -1,15 +1,8 @@
 package vn.com.abc.tanhoaandroid;
 
-import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.AsyncTask;
-
-import org.ksoap2.SoapEnvelope;
-import org.ksoap2.serialization.PropertyInfo;
-import org.ksoap2.serialization.SoapObject;
-import org.ksoap2.serialization.SoapSerializationEnvelope;
-import org.ksoap2.transport.HttpTransportSE;
 
 /**
  * Created by user on 07/09/2017.
@@ -52,6 +45,8 @@ public class AsyncTaskWS extends AsyncTask<String, Void, Object> {
     protected Object doInBackground(String... params) {
 
         switch (params[0]) {
+            case "GetCurrentVersion":
+                return _ws.GetCurrentVersion();
             case "DangNhap":
                 return _ws.DangNhap(params[1], params[2]);
             case "GetDSDocSo":
@@ -67,8 +62,7 @@ public class AsyncTaskWS extends AsyncTask<String, Void, Object> {
             case "ThemHinhDHN":
                 return _ws.ThemHinhDHN(params[1], params[2], params[3], params[4], params[5]);
 
-        }
-        ;
+        };
 
         return null;
     }
